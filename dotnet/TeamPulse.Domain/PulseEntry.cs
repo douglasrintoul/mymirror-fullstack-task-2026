@@ -8,6 +8,7 @@ public class PulseEntry
     public Guid Id { get; set; }
     public DateTime CreatedAt { get; set;}
     public PulseScore Score { get; set; }
+    [Required]
     public Guid CategoryId { get; set; }
     public string? Comment { get; set; }
     public PulseEntry(PulseScore score, Guid categoryId, string? comment = null)
