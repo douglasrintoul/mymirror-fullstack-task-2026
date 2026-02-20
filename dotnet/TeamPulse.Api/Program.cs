@@ -10,6 +10,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<TeamPulseDbContext>(options => 
     options.UseInMemoryDatabase("TeamPulseInMemoryDb"));
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
