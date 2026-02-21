@@ -2,13 +2,25 @@ using MediatR;
 
 namespace TeamPulse.Application;
 
-public record GetTeamPulseCategoriesQuery() : IRequest<TeamPulseCategoryDTO>;
+public record GetTeamPulseCategoriesQuery() : IRequest<List<TeamPulseCategoryDTO>>;
 
-public class GetTeamPulseCategoriesQueryHandler : IRequestHandler<GetTeamPulseCategoriesQuery, TeamPulseCategoryDTO>
+public class GetTeamPulseCategoriesQueryHandler : IRequestHandler<GetTeamPulseCategoriesQuery, List<TeamPulseCategoryDTO>>
 {
-    public Task<TeamPulseCategoryDTO> Handle(GetTeamPulseCategoriesQuery request, CancellationToken cancellationToken)
+    private readonly IPulseRepository _repository;
+
+    public GetTeamPulseCategoriesQueryHandler(IPulseRepository repository)
     {
-        // TODO: Use the interface to load the categories
-        throw new NotImplementedException();
+        _repository = repository;
+    }
+
+    public async Task<List<TeamPulseCategoryDTO>> Handle(GetTeamPulseCategoriesQuery request, CancellationToken cancellationToken)
+    {
+        var categories = await _repository.GetAllCategoriesAsync();
+
+        return categories.Select(c => new TeamPulseCategoryDTO
+        {
+            Id = c.Id,
+            Name = c.Name
+        }).ToList();
     }
 }
