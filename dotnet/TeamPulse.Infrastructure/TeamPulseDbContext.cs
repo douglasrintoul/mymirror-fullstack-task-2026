@@ -31,8 +31,8 @@ public class TeamPulseDbContext : DbContext
             new PulseCategory(Guid.Parse("a1b2c3d4-0002-0000-0000-000000000000"), "Collaboration"),
             new PulseCategory(Guid.Parse("a1b2c3d4-0003-0000-0000-000000000000"), "Wellbeing"),
             new PulseCategory(Guid.Parse("a1b2c3d4-0004-0000-0000-000000000000"), "Team Dynamics"),
-            new PulseCategory(Guid.Parse("a1b2c3d4-0005-0000-0000-000000000000"), "Mascot Performance")
-
+            new PulseCategory(Guid.Parse("a1b2c3d4-0005-0000-0000-000000000000"), "Environment"),
+            new PulseCategory(Guid.Parse("a1b2c3d4-0006-0000-0000-000000000000"), "Mascot Performance")
         );
 
     }
