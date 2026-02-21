@@ -6,11 +6,9 @@ export default defineNuxtConfig({
 
 	css: ['@picocss/pico'],
 
-	routeRules: {
-		// Note: we route API requests to the dotnet API, which runs on port 5295. If we need to facilitate
-		// M2M authentication, we could set up an intermediary API through Nuxt to handle authentication
-		'/api/**': {
-			proxy: 'http://localhost:5295/api/**',
+	runtimeConfig: {
+		public: {
+			apiBaseUrl: '',
 		},
 	},
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PulseFormData } from '~/types/pulse-form';
+import type { PulseFormData, PulseCategory } from '~/types/pulse-form';
 
 defineProps<{
 	loading: boolean;
@@ -9,12 +9,24 @@ defineProps<{
 
 const emit = defineEmits<{
 	submit: [data: PulseFormData];
+	change: [];
 }>();
+
+const config = useRuntimeConfig();
+const { data: categories } = useFetch<PulseCategory[]>('/api/pulse/categories', {
+	baseURL: config.public.apiBaseUrl,
+});
 
 const formData = reactive<PulseFormData>({
 	score: null,
-	category: '',
+	categoryId: '',
 	comment: '',
+});
+
+const formValid = computed(() => formData.score !== null && formData.categoryId !== '');
+
+watch(formData, () => {
+	emit('change');
 });
 </script>
 
@@ -25,7 +37,7 @@ const formData = reactive<PulseFormData>({
 		@update:value="formData.score = $event"
 	/>
 	<select
-		v-model="formData.category"
+		v-model="formData.categoryId"
 		name="category"
 	>
 		<option
@@ -35,29 +47,38 @@ const formData = reactive<PulseFormData>({
 		>
 			Pulse Category
 		</option>
-		<option>Category 1</option>
-		<option>Category 2</option>
+		<option
+			v-for="category in categories"
+			:key="category.id"
+			:value="category.id"
+		>
+			{{ category.name }}
+		</option>
 	</select>
-  <input
-    v-model="formData.comment"
-    name="comment"
-    placeholder="Optional comment"
-  >
-  <div>
-    <p v-if="showSuccessMessage">
-      <Icon
-			name="proicons:checkmark-circle"
-			style="position: relative; top: 2px;"
-      /> Pulse submitted - thank you!
-    </p>
-    <p v-if="error" style="color: red">
-      {{ error }}
-    </p>
-    <LoadingSpinner v-if="loading" />
-  </div>
+	<input
+		v-model="formData.comment"
+		name="comment"
+		placeholder="Optional comment"
+    maxlength="500"
+	>
+	<div>
+		<p v-if="showSuccessMessage">
+			<Icon
+				name="proicons:checkmark-circle"
+        mode="svg"
+			/> Pulse submitted - thank you!
+		</p>
+		<p
+			v-if="error"
+			style="color: red"
+		>
+			{{ error }}
+		</p>
+		<LoadingSpinner v-if="loading" />
+	</div>
 	<button
 		class="submit-pulse-button"
-		:disabled="loading"
+		:disabled="loading || !formValid"
 		@click="emit('submit', { ...formData })"
 	>
 		Submit Pulse
