@@ -3,7 +3,7 @@ using TeamPulse.Domain;
 
 namespace TeamPulse.Application;
 
-public class SubmitTeamPulseDto
+public class SubmitTeamPulseDTO
 {
     [Range(1, 5, ErrorMessage = "Score must be between 1 and 5.")]
     public required int Score { get; set; }

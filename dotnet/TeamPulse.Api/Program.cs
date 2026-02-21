@@ -67,7 +67,7 @@ app.UseExceptionHandler(appError =>
 });
 
 // Using inline endpoint declarations since there are only 3 endpoints
-app.MapPost("/api/pulse", async (SubmitTeamPulseDto dto, IMediator mediator) =>
+app.MapPost("/api/pulse", async (SubmitTeamPulseDTO dto, IMediator mediator) =>
 {
     var validationResults = new List<ValidationResult>();
     if (!Validator.TryValidateObject(dto, new ValidationContext(dto), validationResults, true))

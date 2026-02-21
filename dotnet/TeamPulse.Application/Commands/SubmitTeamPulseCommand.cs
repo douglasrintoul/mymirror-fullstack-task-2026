@@ -5,7 +5,7 @@ namespace TeamPulse.Application;
 
 public class SubmitTeamPulseCommand : IRequest<SubmitTeamPulseResponseDTO>
 {
-    public required SubmitTeamPulseDto Request { get; set; }
+    public required SubmitTeamPulseDTO Request { get; set; }
 }
 
 public class SubmitTeamPulseCommandHandler : IRequestHandler<SubmitTeamPulseCommand, SubmitTeamPulseResponseDTO>
