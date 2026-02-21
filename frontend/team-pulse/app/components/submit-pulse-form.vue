@@ -59,13 +59,13 @@ watch(formData, () => {
 		v-model="formData.comment"
 		name="comment"
 		placeholder="Optional comment"
-    maxlength="500"
+		maxlength="500"
 	>
 	<div>
 		<p v-if="showSuccessMessage">
 			<Icon
 				name="proicons:checkmark-circle"
-        mode="svg"
+				mode="svg"
 			/> Pulse submitted - thank you!
 		</p>
 		<p
