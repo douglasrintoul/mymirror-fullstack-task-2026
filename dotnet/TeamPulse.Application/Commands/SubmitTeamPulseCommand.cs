@@ -1,4 +1,5 @@
 using MediatR;
+using TeamPulse.Domain;
 
 namespace TeamPulse.Application;
 
@@ -7,10 +8,37 @@ public class SubmitTeamPulseCommand : IRequest<SubmitTeamPulseResponseDTO>
     public required SubmitTeamPulseDto Request { get; set; }
 }
 
-public class CreateTaskSubmitTeamPulseCommandHandler : IRequestHandler<SubmitTeamPulseCommand, SubmitTeamPulseResponseDTO>
+public class SubmitTeamPulseCommandHandler : IRequestHandler<SubmitTeamPulseCommand, SubmitTeamPulseResponseDTO>
 {
-    public Task<SubmitTeamPulseResponseDTO> Handle(SubmitTeamPulseCommand request, CancellationToken cancellationToken)
+    private readonly IPulseRepository _repository;
+
+    public SubmitTeamPulseCommandHandler(IPulseRepository repository)
     {
-        throw new NotImplementedException();
+        _repository = repository;
+    }
+
+    public async Task<SubmitTeamPulseResponseDTO> Handle(SubmitTeamPulseCommand request, CancellationToken cancellationToken)
+    {
+        var dto = request.Request;
+
+        var categoryExists = await _repository.CategoryExistsAsync(dto.CategoryId);
+        if (!categoryExists)
+        {
+            return new SubmitTeamPulseResponseDTO { Success = false, Error = "Category doesn't exist" };
+        }
+
+        PulseScore? score;
+        try
+        {
+            score = new PulseScore(dto.Score);
+        } catch (ArgumentException)
+        {
+            return new SubmitTeamPulseResponseDTO { Success = false, Error = "Invalid score" };
+        }
+ 
+        var entry = new PulseEntry(score, dto.CategoryId, dto.Comment);
+        await _repository.AddEntryAsync(entry);
+
+        return new SubmitTeamPulseResponseDTO { Success = true, Id = entry.Id };
     }
 }
