@@ -16,23 +16,23 @@ const mostCommonScore = computed(() => {
 		<div class="summary-card-wrapper summary-card-wrapper--highlighted">
 			<div class="summary-card">
 				<p>Total Submissions</p>
-				<strong>{{ summary.count }}</strong>
+				<span class="value">{{ summary.count }}</span>
 			</div>
 		</div>
 		<div class="summary-card-wrapper">
 			<div class="summary-card">
 				<p>Average Score</p>
-				<strong>{{ summary.averageScore }}</strong>
+				<span class="value">{{ summary.averageScore }}</span>
 			</div>
 		</div>
 		<div class="summary-card-wrapper">
 			<div class="summary-card">
 				<p>Most Common Score</p>
-				<strong>{{ mostCommonScore }}</strong>
+				<span class="value">{{ mostCommonScore }}</span>
 			</div>
 		</div>
 	</div>
-	<h4>Score Distribution</h4>
+	<h5 style="color: var(--hero-blue);">Score Distribution</h5>
 	<p>GRAPH</p>
 	<small style="color: var(--hero-blue);">Aggregated results only. Individual submissions remain anonymous.</small>
 </template>
@@ -67,11 +67,14 @@ const mostCommonScore = computed(() => {
 
 .summary-card p {
 	display: block;
+	line-height: 1.2;
 	margin-bottom: 0.25rem;
 	font-size: 0.8rem;
 }
 
-.summary-card strong {
+.summary-card .value {
 	font-size: 2rem;
+	font-weight: 500;
+	color: var(--hero-blue);
 }
 </style>
