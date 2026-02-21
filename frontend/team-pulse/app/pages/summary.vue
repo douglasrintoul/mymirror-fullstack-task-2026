@@ -2,7 +2,7 @@
 import type { TeamPulseSummary } from '~/types/pulse-summary';
 
 const config = useRuntimeConfig();
-const { data, status } = useFetch<TeamPulseSummary>('/api/pulse/summary', {
+const { data, status, error } = useFetch<TeamPulseSummary>('/api/pulse/summary', {
 	lazy: true,
 	baseURL: config.public.apiBaseUrl,
 });
@@ -16,5 +16,6 @@ const { data, status } = useFetch<TeamPulseSummary>('/api/pulse/summary', {
 			v-else-if="data"
 			:summary="data"
 		/>
+        <p v-else-if="error">Couldn't load the summary. Please try again later.</p>
 	</PulseCard>
 </template>
