@@ -66,13 +66,13 @@ const chartOptions = {
 		<div class="summary-card-wrapper">
 			<div class="summary-card">
 				<p>Average Score</p>
-				<span class="value">{{ summary.averageScore }}</span>
+				<span class="value">{{ summary.count === 0 ? "N/A" : summary.averageScore }}</span>
 			</div>
 		</div>
 		<div class="summary-card-wrapper">
 			<div class="summary-card">
 				<p>Most Common Score</p>
-				<span class="value">{{ mostCommonScore }}</span>
+				<span class="value">{{ summary.count === 0 ? "N/A" : mostCommonScore }}</span>
 			</div>
 		</div>
 	</div>
