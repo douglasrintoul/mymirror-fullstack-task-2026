@@ -6,9 +6,43 @@ public record GetTeamPulseSummaryQuery() : IRequest<TeamPulseSummaryDTO>;
 
 public class GetTeamPulseSummaryQueryHandler : IRequestHandler<GetTeamPulseSummaryQuery, TeamPulseSummaryDTO>
 {
-    public Task<TeamPulseSummaryDTO> Handle(GetTeamPulseSummaryQuery request, CancellationToken cancellationToken)
+    private readonly IPulseRepository _repository;
+
+    public GetTeamPulseSummaryQueryHandler(IPulseRepository repository)
     {
-        // TODO: Use the interface to load in the summary
-        throw new NotImplementedException();
+        _repository = repository;
+    }
+
+    public async Task<TeamPulseSummaryDTO> Handle(GetTeamPulseSummaryQuery request, CancellationToken cancellationToken)
+    {
+        var entries = await _repository.GetAllEntriesAsync();
+        var categories = await _repository.GetAllCategoriesAsync();
+
+        var count = entries.Count;
+        var averageScore = count > 0
+            ? Math.Round((decimal)entries.Average(e => e.Score.Value), 2)
+            : 0m;
+
+        // Using Enumerable.Range to display scores with zero-count. If we want to only return scores that appear
+        // in the set of entries, we would remove this.
+        var scores = Enumerable.Range(1, 5).ToDictionary(
+            score => score,
+            score => entries.Count(e => e.Score.Value == score)
+        );
+
+        var categoryDtos = categories.Select((cat, index) => new TeamPulseSummaryCategoryDTO
+        {
+            Id = index + 1,
+            Name = cat.Name,
+            Count = entries.Count(e => e.CategoryId == cat.Id)
+        }).ToList();
+
+        return new TeamPulseSummaryDTO
+        {
+            Count = count,
+            AverageScore = averageScore,
+            Scores = scores,
+            Categories = categoryDtos
+        };
     }
 }
