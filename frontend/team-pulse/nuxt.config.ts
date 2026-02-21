@@ -17,7 +17,7 @@ export default defineNuxtConfig({
 
   css: ["@picocss/pico"],
 
-  modules: ['@nuxt/eslint'],
+  modules: ['@nuxt/eslint', '@nuxt/icon'],
   
   eslint: {
     config: {
