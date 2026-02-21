@@ -12,7 +12,7 @@ const emit = defineEmits<{
 }>();
 
 const config = useRuntimeConfig();
-const { data: categories } = useFetch<PulseCategory[]>('/api/pulse/categories', {
+const { data: categories, error: categoryError } = useFetch<PulseCategory[]>('/api/pulse/categories', {
 	baseURL: config.public.apiBaseUrl,
 });
 
@@ -31,7 +31,6 @@ watch(() => props.formSubmissionSuccessful, (val) => {
 		formData.comment = '';
 	}
 });
-
 </script>
 
 <template>
@@ -73,10 +72,10 @@ watch(() => props.formSubmissionSuccessful, (val) => {
 			/> Pulse submitted - thank you!
 		</p>
 		<p
-			v-if="error"
+			v-if="error || categoryError"
 			style="color: red"
 		>
-			{{ error }}
+			{{ categoryError ? 'Unable to load Categories. Please try again later.' : error }}
 		</p>
 		<LoadingSpinner v-if="loading" />
 	</div>
