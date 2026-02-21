@@ -7,13 +7,13 @@ public class PulseEntry
     public const int MaxCommentLength = 500;
 
     [Key]
-    public Guid Id { get; set; }
-    public DateTime CreatedAt { get; set;}
-    public PulseScore Score { get; set; }
+    public Guid Id { get; private set; }
+    public DateTime CreatedAt { get; private set;}
+    public PulseScore Score { get; private set; }
     [Required]
-    public Guid CategoryId { get; set; }
+    public Guid CategoryId { get; private set; }
     [MaxLength(MaxCommentLength)]
-    public string? Comment { get; set; }
+    public string? Comment { get; private set; }
     public PulseEntry(PulseScore score, Guid categoryId, string? comment = null)
     {
         Id = Guid.NewGuid();

@@ -1,6 +1,6 @@
 ﻿namespace TeamPulse.Domain;
 
-public class PulseScore
+public record class PulseScore
 {
     public int Value { get; }
 
