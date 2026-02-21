@@ -21,6 +21,11 @@ public class SubmitTeamPulseCommandHandler : IRequestHandler<SubmitTeamPulseComm
     {
         var dto = request.Request;
 
+        if (dto.Comment != null && dto.Comment.Length > PulseEntry.MaxCommentLength)
+        {
+            return new SubmitTeamPulseResponseDTO { Success = false, Error = $"Comment must not exceed {PulseEntry.MaxCommentLength} characters" };
+        }
+
         var categoryExists = await _repository.CategoryExistsAsync(dto.CategoryId);
         if (!categoryExists)
         {
