@@ -34,24 +34,24 @@ const chartData = computed<ChartData<'bar'>>(() => {
 				label: 'Team Pulse Scores',
 				// This mapping provides highlighting for the minimum and maximum value, as in the designs
 				backgroundColor: values.map(v =>
-					v === min || v === max ? heroOrange.value : heroBlue.value
+					v === min || v === max ? heroOrange.value : heroBlue.value,
 				),
-				data: values
-			}
-		]
-	}
+				data: values,
+			},
+		],
+	};
 });
 
 const chartOptions = {
 	responsive: true,
 	plugins: {
-		legend: { display: false }
+		legend: { display: false },
 	},
 	scales: {
 		y: {
-			ticks: { stepSize: 1 }
-		}
-	}
+			ticks: { stepSize: 1 },
+		},
+	},
 };
 </script>
 
@@ -76,9 +76,14 @@ const chartOptions = {
 			</div>
 		</div>
 	</div>
-	<h5 style="color: var(--hero-blue);">Score Distribution</h5>
-	
-	<Bar :data="chartData" :options="chartOptions" />
+	<h5 style="color: var(--hero-blue);">
+		Score Distribution
+	</h5>
+
+	<Bar
+		:data="chartData"
+		:options="chartOptions"
+	/>
 
 	<small style="color: var(--hero-blue);">Aggregated results only. Individual submissions remain anonymous.</small>
 </template>
