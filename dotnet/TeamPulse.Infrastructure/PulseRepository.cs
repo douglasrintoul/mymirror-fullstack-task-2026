@@ -1,8 +1,8 @@
-// TeamPulse.Infrastructure
 using Microsoft.EntityFrameworkCore;
 using TeamPulse.Application;
 using TeamPulse.Domain;
-using TeamPulse.Infrastructure;
+
+namespace TeamPulse.Infrastructure;
 
 public class PulseRepository : IPulseRepository
 {
