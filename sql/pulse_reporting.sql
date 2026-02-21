@@ -6,7 +6,7 @@ CREATE TABLE PulseCategory (
 CREATE TABLE PulseEntry (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-    Comment: NVARCHAR(500) NULL,
+    Comment NVARCHAR(500) NULL,
     -- Validation here isn't strictly necessary, but if it's a strong business rule
     -- and unlikely to change then it's a good extra line of defence.
     Score INT NOT NULL CHECK (Score >= 1 AND Score <= 5),

@@ -19,6 +19,15 @@ builder.Services.AddScoped<IPulseRepository, PulseRepository>();
 // Add MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SubmitTeamPulseCommand>());
 
+// CORS - Allow all origins for this example
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -34,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseExceptionHandler(appError =>
 {
@@ -66,7 +77,7 @@ app.MapPost("/api/pulse", async (SubmitTeamPulseDto dto, IMediator mediator) =>
     }
 
     var result = await mediator.Send(new SubmitTeamPulseCommand { Request = dto });
-    return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+    return result.Success ? Results.Created($"/api/pulse/{result.Id}", result) : Results.BadRequest(result);
 });
 
 app.MapGet("/api/pulse/summary", async (IMediator mediator) =>

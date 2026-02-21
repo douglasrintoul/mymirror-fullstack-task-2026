@@ -15,7 +15,7 @@ public class PulseCategory
     }
     public PulseCategory(string name)
     {
-        Id = new Guid();
+        Id = Guid.NewGuid();
         Name = name;
     }
 }
