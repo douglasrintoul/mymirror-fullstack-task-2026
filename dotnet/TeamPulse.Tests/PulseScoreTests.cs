@@ -3,7 +3,7 @@
 namespace TeamPulse.Tests;
 
 [TestFixture]
-public class Tests
+public class PulseScoreTests
 {
 
     [TestCase(1)]
