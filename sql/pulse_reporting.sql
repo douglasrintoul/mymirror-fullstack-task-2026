@@ -36,6 +36,6 @@ SELECT
     c.Id,
     c.Name,
     COUNT (e.Id) AS TotalCount
-FROM PulseCategory pc
+FROM PulseCategory c
 LEFT JOIN PulseEntry e ON e.CategoryId = c.Id
 GROUP BY c.Id, c.Name;
