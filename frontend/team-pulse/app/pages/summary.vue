@@ -18,6 +18,8 @@ const { data, status, error } = useFetch<TeamPulseSummary>('/api/pulse/summary',
 			v-else-if="data"
 			:summary="data"
 		/>
-        <p v-else-if="error">Couldn't load the summary. Please try again later.</p>
+		<p v-else-if="error">
+			Couldn't load the summary. Please try again later.
+		</p>
 	</PulseCard>
 </template>
