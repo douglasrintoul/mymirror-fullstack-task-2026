@@ -1,5 +1,6 @@
 <template>
     <PulseCard>
-        <h1>Team Pulse Summary</h1>
+        <h2>Team Pulse Summary</h2>
+        <small>Aggregated results only. Individual submissions remain anonymous.</small>
     </PulseCard>
 </template>
