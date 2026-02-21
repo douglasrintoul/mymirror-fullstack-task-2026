@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TeamPulse.Application;
 using TeamPulse.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,10 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<TeamPulseDbContext>(options => 
+builder.Services.AddDbContext<TeamPulseDbContext>(options =>
     options.UseInMemoryDatabase("TeamPulseInMemoryDb"));
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+// Service Mappings
+builder.Services.AddScoped<IPulseRepository, PulseRepository>();
+
+// Add MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SubmitTeamPulseCommand>());
 
 var app = builder.Build();
 
