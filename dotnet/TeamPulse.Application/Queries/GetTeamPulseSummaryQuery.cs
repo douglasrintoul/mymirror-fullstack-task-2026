@@ -15,6 +15,9 @@ public class GetTeamPulseSummaryQueryHandler : IRequestHandler<GetTeamPulseSumma
 
     public async Task<TeamPulseSummaryDTO> Handle(GetTeamPulseSummaryQuery request, CancellationToken cancellationToken)
     {
+        // NOTE: This loads all entries into memory. Depending on architecture and load, this might need to be refactored
+        // in future to do the aggregation on the database side. For now though, I've chosen to do this in-memory
+        // for development speed and because this is very unlikely to be a performance issue given the application.
         var entries = await _repository.GetAllEntriesAsync();
         var categories = await _repository.GetAllCategoriesAsync();
 
