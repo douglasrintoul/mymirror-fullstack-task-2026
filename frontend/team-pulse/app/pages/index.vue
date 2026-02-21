@@ -1,18 +1,25 @@
 <script setup lang="ts">
-const scoreValue = ref<number | null>(null);
-const selectedCategory = ref<string>("");
-const comment = ref<string>("");
+import type { PulseFormData } from '~/types/pulse-form';
+
+const loading = ref(false);
+const showSuccessMessage = ref(false);
+const error = ref('');
+
+function handleSubmit(data: PulseFormData) {
+	showSuccessMessage.value = false;
+	error.value = '';
+	console.log(data);
+}
 </script>
 
 <template>
-    <PulseCard>
-        <h2>How Are You Feeling Today?</h2>
-        <ScorePicker :max="5" :value="scoreValue" @update:value="scoreValue = $event" />
-        <select v-model="selectedCategory" name="category" placeholder="Hello?">
-            <option selected disabled value="">Pulse Category</option>
-            <option>Category 1</option>
-            <option>Category 2</option>
-        </select>
-        <input v-model="comment" name="comment" placeholder="Optional comment">
-    </PulseCard>
+	<PulseCard>
+		<h2>How Are You Feeling Today?</h2>
+		<SubmitPulseForm
+			:loading="loading"
+			:show-success-message="showSuccessMessage"
+			:error="error"
+			@submit="handleSubmit"
+		/>
+	</PulseCard>
 </template>

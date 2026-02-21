@@ -1,32 +1,30 @@
 <script setup lang="ts">
-
 const props = withDefaults(defineProps<{
-    max?: number | null,
-    value: number | null
+	max?: number | null;
+	value: number | null;
 }>(), { max: 5 });
 
 defineEmits<{
-  'update:value': [value: number]
-}>()
+	'update:value': [value: number];
+}>();
 </script>
 
 <template>
-    <div class="score-picker">
-        <button
-            v-for="n in props.max"
-            :key="n"
-            type="button"
-            class="score-option"
-            :class="{ selected: value === n }"
-            @click="$emit('update:value', n)"
-        >
-            {{ n }}
-        </button>
-  </div>
+	<div class="score-picker">
+		<button
+			v-for="n in props.max"
+			:key="n"
+			type="button"
+			class="score-option"
+			:class="{ selected: value === n }"
+			@click="$emit('update:value', n)"
+		>
+			{{ n }}
+		</button>
+	</div>
 </template>
 
 <style scoped>
-
 .score-picker {
   display: flex;
   justify-content: space-between;
@@ -54,9 +52,8 @@ defineEmits<{
 }
 
 .score-option.selected {
-  background: #FD8261;
+  background: var(--hero-orange);
   color: #fff;
-  border-color: #FD8261;
+  border-color: var(--hero-orange);
 }
-
 </style>
