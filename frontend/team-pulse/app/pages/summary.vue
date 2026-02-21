@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { TeamPulseSummary } from '~/types/pulse-summary';
 
+useHead({ title: 'Summary - Team Pulse' });
+
 const config = useRuntimeConfig();
 const { data, status, error } = useFetch<TeamPulseSummary>('/api/pulse/summary', {
 	lazy: true,

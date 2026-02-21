@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import type { PulseFormData, SubmitPulseResponse } from '~/types/pulse-form';
 
+useHead({ title: 'Submit Pulse - Team Pulse' });
 const config = useRuntimeConfig();
 const loading = ref(false);
-const showSuccessMessage = ref(false);
+const formSubmissionSuccessful = ref(false);
 const error = ref('');
 
 async function handleSubmit(data: PulseFormData) {
 	loading.value = true;
-	showSuccessMessage.value = false;
+	formSubmissionSuccessful.value = false;
 	error.value = '';
 
 	try {
@@ -23,7 +24,7 @@ async function handleSubmit(data: PulseFormData) {
 		});
 
 		if (response.success) {
-			showSuccessMessage.value = true;
+			formSubmissionSuccessful.value = true;
 		}
 		else {
 			error.value = 'Error: Failed to submit pulse';
@@ -36,10 +37,6 @@ async function handleSubmit(data: PulseFormData) {
 		loading.value = false;
 	}
 }
-
-function handleChange() {
-	showSuccessMessage.value = false;
-}
 </script>
 
 <template>
@@ -47,10 +44,9 @@ function handleChange() {
 		<h2>How Are You Feeling Today?</h2>
 		<SubmitPulseForm
 			:loading="loading"
-			:show-success-message="showSuccessMessage"
+			:form-submission-successful="formSubmissionSuccessful"
 			:error="error"
 			@submit="handleSubmit"
-			@change="handleChange"
 		/>
 	</PulseCard>
 </template>

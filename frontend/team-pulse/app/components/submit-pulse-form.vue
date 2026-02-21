@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import type { PulseFormData, PulseCategory } from '~/types/pulse-form';
 
-defineProps<{
+const props = defineProps<{
 	loading: boolean;
-	showSuccessMessage: boolean;
+	formSubmissionSuccessful: boolean;
 	error: string;
 }>();
 
 const emit = defineEmits<{
 	submit: [data: PulseFormData];
-	change: [];
 }>();
 
 const config = useRuntimeConfig();
@@ -25,9 +24,14 @@ const formData = reactive<PulseFormData>({
 
 const formValid = computed(() => formData.score !== null && formData.categoryId !== '');
 
-watch(formData, () => {
-	emit('change');
+watch(() => props.formSubmissionSuccessful, (val) => {
+	if (val) {
+		formData.score = null;
+		formData.categoryId = '';
+		formData.comment = '';
+	}
 });
+
 </script>
 
 <template>
@@ -62,7 +66,7 @@ watch(formData, () => {
 		maxlength="500"
 	>
 	<div>
-		<p v-if="showSuccessMessage">
+		<p v-if="formSubmissionSuccessful">
 			<Icon
 				name="proicons:checkmark-circle"
 				mode="svg"
