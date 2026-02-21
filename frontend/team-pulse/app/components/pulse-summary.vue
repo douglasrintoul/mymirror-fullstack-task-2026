@@ -1,14 +1,58 @@
 <script setup lang="ts">
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, type ChartData } from 'chart.js';
+import { Bar } from 'vue-chartjs';
 import type { TeamPulseSummary } from '~/types/pulse-summary';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement);
 
 const props = defineProps<{
 	summary: TeamPulseSummary;
 }>();
 
+const heroBlue = ref('');
+const heroOrange = ref('');
+onMounted(() => {
+	const styles = getComputedStyle(document.documentElement);
+	heroBlue.value = styles.getPropertyValue('--hero-blue').trim();
+	heroOrange.value = styles.getPropertyValue('--hero-orange').trim();
+});
+
 const mostCommonScore = computed(() => {
 	const entries = Object.entries(props.summary.scores);
 	return entries.reduce((a, b) => (b[1] > a[1] ? b : a))[0];
 });
+
+const chartData = computed<ChartData<'bar'>>(() => {
+	const values = Object.values(props.summary.scores);
+	const min = Math.min(...values);
+	const max = Math.max(...values);
+
+	return {
+		labels: Object.keys(props.summary.scores),
+		datasets: [
+			{
+				label: 'Team Pulse Scores',
+				// This mapping provides highlighting for the minimum and maximum value, as in the designs
+				backgroundColor: values.map(v =>
+					v === min || v === max ? heroOrange.value : heroBlue.value
+				),
+				data: values
+			}
+		]
+	}
+});
+
+const chartOptions = {
+	responsive: true,
+	plugins: {
+		legend: { display: false }
+	},
+	scales: {
+		y: {
+			ticks: { stepSize: 1 }
+		}
+	}
+};
 </script>
 
 <template>
@@ -33,7 +77,9 @@ const mostCommonScore = computed(() => {
 		</div>
 	</div>
 	<h5 style="color: var(--hero-blue);">Score Distribution</h5>
-	<p>GRAPH</p>
+	
+	<Bar :data="chartData" :options="chartOptions" />
+
 	<small style="color: var(--hero-blue);">Aggregated results only. Individual submissions remain anonymous.</small>
 </template>
 
